@@ -14,21 +14,31 @@ jobs:
       - name: Download Azure IP Ranges
         run: |
           BASE_DIR="ranges/azure/"
+          
           mkdir -p "$BASE_DIR" || { echo "Failed to create base directory"; exit 1; }
           cd "$BASE_DIR" || { echo "Failed to change directory to $BASE_DIR"; exit 1; }
+          
           MS_IP_RANGES_URL="https://www.microsoft.com/en-us/download/confirmation.aspx?id=56519"
           SERVICE_TAGS_URL=$(curl -Lfs "${MS_IP_RANGES_URL}" | grep -Eo 'href="https?://download.microsoft.com/download/[^"]+"' | grep -m1 -Eo '(http|https)://[^"]+')  || { echo "Failed to extract URL"; exit 1; }
+          
           if [[ -z "$SERVICE_TAGS_URL" ]]; then
               echo "No URL found. Exiting."
               exit 1
           fi
+          
           wget -O $(basename "$SERVICE_TAGS_URL") "$SERVICE_TAGS_URL" || { echo "Failed to download file"; exit 1; }
           cp -i $(basename "$SERVICE_TAGS_URL") ServiceTags_Public_Latest.json || { echo "Failed to copy file"; exit 1; }
+          
           echo "Operation completed successfully."
       - name: Commit Azure IP Ranges
         run: |
           git config --global user.name 'Stig Voss'
           git config --global user.email 'stigvoss@users.noreply.github.com'
           git add *
-          git commit -m "Update Azure IP Ranges"
-          git push
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update Azure IP Ranges"
+            git push
+          fi
