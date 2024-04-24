@@ -13,7 +13,7 @@ jobs:
       - name: Download IP Ranges
         run: |
           DOWNLOAD_PAGE_ID="57062"
-          BASE_DIR="ranges/azure/public/"
+          BASE_DIR="ranges/azure/china/"
           
           mkdir -p "$BASE_DIR" || { echo "Failed to create base directory"; exit 1; }
           cd "$BASE_DIR" || { echo "Failed to change directory to $BASE_DIR"; exit 1; }
