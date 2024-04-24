@@ -18,7 +18,7 @@ jobs:
           MICROSOFT_IP_RANGES_URL="https://www.microsoft.com/en-us/download/confirmation.aspx?id=56519"
           MICROSOFT_IP_RANGES_URL_FINAL=$(curl -Lfs "${MICROSOFT_IP_RANGES_URL}" | grep -Eoi '<a [^>]+>' | grep -Eo 'href="[^\"]+"' | grep "download.microsoft.com/download/" | grep -m 1 -Eo '(http|https)://[^"]+')
           wget -O "ServiceTags_Public_Latest.json" $MICROSOFT_IP_RANGES_URL_FINAL
-          wget -O $MICROSOFT_IP_RANGES_URL_FINAL
+          wget $MICROSOFT_IP_RANGES_URL_FINAL
       - name: Commit Azure IP Ranges
         run: |
           git config --global user.name 'Stig Voss'
