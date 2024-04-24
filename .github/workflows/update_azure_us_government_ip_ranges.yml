@@ -13,7 +13,7 @@ jobs:
       # https://stackoverflow.com/a/53939113
       - name: Download IP Ranges
         run: |
-          BASE_DIR="ranges/azure/public/"
+          BASE_DIR="ranges/azure/us_government/"
           
           mkdir -p "$BASE_DIR" || { echo "Failed to create base directory"; exit 1; }
           cd "$BASE_DIR" || { echo "Failed to change directory to $BASE_DIR"; exit 1; }
