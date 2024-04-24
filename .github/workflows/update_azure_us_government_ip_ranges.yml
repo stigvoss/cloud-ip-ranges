@@ -9,7 +9,7 @@ jobs:
   update_ip_ranges:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # https://stackoverflow.com/a/53939113
       - name: Download IP Ranges
         run: |
