@@ -1,4 +1,4 @@
-name: Update Azure IP Ranges
+name: Update Azure IP Ranges - Public Cloud
 
 on: 
   workflow_dispatch:
@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       # https://stackoverflow.com/a/53939113
-      - name: Download Azure IP Ranges
+      - name: Download IP Ranges
         run: |
           BASE_DIR="ranges/azure/public/"
           
@@ -30,7 +30,7 @@ jobs:
           cp -i $(basename "$SERVICE_TAGS_URL") latest.json || { echo "Failed to copy file"; exit 1; }
           
           echo "Operation completed successfully."
-      - name: Commit Azure IP Ranges
+      - name: Commit IP Ranges
         run: |
           git config --global user.name 'Stig Voss'
           git config --global user.email 'stigvoss@users.noreply.github.com'
