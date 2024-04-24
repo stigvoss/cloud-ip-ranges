@@ -22,8 +22,8 @@ jobs:
           SERVICE_TAGS_URL=$(curl -Lfs "${MS_IP_RANGES_URL}" | grep -Eo 'href="https?://download.microsoft.com/download/[^"]+"' | grep -m1 -Eo '(http|https)://[^"]+')  || { echo "Failed to extract URL"; exit 1; }
           
           if [[ -z "$SERVICE_TAGS_URL" ]]; then
-              echo "No URL found. Exiting."
-              exit 1
+            echo "No URL found. Exiting."
+            exit 1
           fi
           
           wget -O $(basename "$SERVICE_TAGS_URL") "$SERVICE_TAGS_URL" || { echo "Failed to download file"; exit 1; }
