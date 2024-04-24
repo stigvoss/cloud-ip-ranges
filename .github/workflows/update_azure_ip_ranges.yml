@@ -13,7 +13,7 @@ jobs:
       # https://stackoverflow.com/a/53939113
       - name: Download Azure IP Ranges
         run: |
-          BASE_DIR="ranges/azure/"
+          BASE_DIR="ranges/azure/public/"
           
           mkdir -p "$BASE_DIR" || { echo "Failed to create base directory"; exit 1; }
           cd "$BASE_DIR" || { echo "Failed to change directory to $BASE_DIR"; exit 1; }
@@ -27,7 +27,7 @@ jobs:
           fi
           
           wget -O $(basename "$SERVICE_TAGS_URL") "$SERVICE_TAGS_URL" || { echo "Failed to download file"; exit 1; }
-          cp -i $(basename "$SERVICE_TAGS_URL") ServiceTags_Public_Latest.json || { echo "Failed to copy file"; exit 1; }
+          cp -i $(basename "$SERVICE_TAGS_URL") latest.json || { echo "Failed to copy file"; exit 1; }
           
           echo "Operation completed successfully."
       - name: Commit Azure IP Ranges
