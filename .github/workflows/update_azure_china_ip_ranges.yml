@@ -1,0 +1,44 @@
+name: Update Azure IP Ranges - China Cloud
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  update_ip_ranges:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download IP Ranges
+        run: |
+          DOWNLOAD_PAGE_ID="57062"
+          BASE_DIR="ranges/azure/public/"
+          
+          mkdir -p "$BASE_DIR" || { echo "Failed to create base directory"; exit 1; }
+          cd "$BASE_DIR" || { echo "Failed to change directory to $BASE_DIR"; exit 1; }
+
+          MS_IP_RANGES_URL="https://www.microsoft.com/en-us/download/confirmation.aspx?id=$DOWNLOAD_PAGE_ID"
+          SERVICE_TAGS_URL=$(curl -Lfs "${MS_IP_RANGES_URL}" | grep -Eo 'href="https?://download.microsoft.com/download/[^"]+"' | grep -m1 -Eo '(http|https)://[^"]+')  || { echo "Failed to extract URL"; exit 1; }
+          
+          if [[ -z "$SERVICE_TAGS_URL" ]]; then
+            echo "No URL found. Exiting."
+            exit 1
+          fi
+          
+          wget -O $(basename "$SERVICE_TAGS_URL") "$SERVICE_TAGS_URL" || { echo "Failed to download file"; exit 1; }
+          cp $(basename "$SERVICE_TAGS_URL") latest.json || { echo "Failed to copy file"; exit 1; }
+          
+          echo "Operation completed successfully."
+      - name: Commit IP Ranges
+        run: |
+          git config --global user.name 'Stig Voss'
+          git config --global user.email 'stigvoss@users.noreply.github.com'
+          git add *
+          
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update Azure IP Ranges"
+            git push
+          fi
