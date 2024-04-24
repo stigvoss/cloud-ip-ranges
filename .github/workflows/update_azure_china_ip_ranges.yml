@@ -3,7 +3,7 @@ name: Update Azure IP Ranges - China Cloud
 on: 
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "2 0 * * *"
 
 jobs:
   update_ip_ranges:
