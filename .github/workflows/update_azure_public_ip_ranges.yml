@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      # https://stackoverflow.com/a/53939113
       - name: Download IP Ranges
         run: |
           DOWNLOAD_PAGE_ID="56519"
